@@ -1,153 +1,52 @@
-{% set col_label = "col-lg-5 col-form-label text-lg-right pr-0 pr-lg-4" %}
-
-{% macro settings_item(id, label, input_id, tooltip, min, max, snap, ticksnum, decimals=0) -%}
-<tr class="settings-item" min="{{ min }}" max="{{ max }}" snap="{{ snap }}" ticksnum="{{ ticksnum }}" decimals="{{ decimals }}" id="{{ id }}">
+{% macro settings_range_input(id="", label="", input_id="", tooltip="", min=0, max=0, snap=0, ticksnum=0, decimals=0) -%}
+<tr class="settings-item" min="{{ min }}" max="{{ max }}" snap="{{ snap }}" 
+    {% if ticksnum is string -%} ticks {%- else -%} ticksnum {%- endif %}="{{ ticksnum }}" 
+    decimals="{{ decimals }}" id="{{ id }}">
     <td class="settings-item-label"><span class="settings-item-label">{{ label }}</span></td>
     <td class="settings-item-value"><input type="text" class="range styled prefs" id="{{ input_id }}"></td>
     <td><span class="help-mark" title="{{ tooltip }}">?</span></td>
 </tr>
 {%- endmacro %}
 
-{% macro button(name, id, class="primary") -%}
-<button class="btn btn-{{ class }} btn-block btn-sm" id="{{ id }}">{{ name }}</button>
+{% macro settings_text_input(id, label, classes, tooltip="", placeholder="", required=false, strip=false, readonly=false) -%}
+<tr class="settings-item" strip="true" {% if required %} required="true" {% endif %} {% if strip %}strip="true" {% endif %}>
+    <td class="settings-item-label"><span class="settings-item-label">{{ label }}</span></td>
+    <td class="settings-item-value"><input type="text" class="styled {{ classes }}" id="{{ id }}" 
+        {% if placeholder|length > 0 %}
+        placeholder="{{ placeholder }}"
+        {% endif %} 
+        {% if readonly %} readonly="readonly" {% endif %}></td>
+    {% if tooltip|length > 0 %}
+    <td><span class="help-mark" title="{{ tooltip }}">?</span></td>
+    {% endif %}
+</tr>
 {%- endmacro %}
 
-{% macro input(label, id, type="text", required=false, tooltip="", readonly=false, autocapitalize="") -%}
-<div class="{{ row_classes }}">
-    <label for="{{ id }}" class="{{ col_label }}">
-        {{ label }}
-        {# need class hover to trigger on mobile #}
-        <a tabindex="0" class="text-secondary d-block d-lg-none float-right" data-placement="top" data-toggle="popover" data-trigger="hover focus" 
-            title="{{ label }}" data-content="{{ tooltip }}">
-            {{ help_icon }}
-        </a>
-    </label>
-    <div class="{{ col_input }}">
-        <input 
-            class="form-control" 
-            type="{{ type }}" 
-            id="{{ id }}" 
-            {% if readonly %} readonly="readonly"{% endif %} 
-            {% if required %} required {% endif %} 
-            {% if type == "password" %} autocomplete="new-password" {% endif %} 
-            autocapitalize="{{ autocapitalize }}">
-    </div>
-    {{ help_column(label, tooltip) }}
-</div>
+{% macro settings_check_input(id, label, classes, tooltip="") -%}
+<tr class="settings-item">
+    <td class="settings-item-label"><span class="settings-item-label">{{ label }}</span></td>
+    <td class="settings-item-value"><input type="checkbox" class="styled {{ classes }}" id="{{ id }}"></td>
+    <td><span class="help-mark" title="{{ tooltip }}">?</span></td>
+</tr>
 {%- endmacro %}
 
-{% macro info(label, value) -%}
-<div class="{{ row_classes }} my-0 d-flex justify-content-between">
-    <label class="col-form-label text-lg-right pr-4 py-1">
-        {{ label }}
-    </label>
-    <div class="col-form-label py-1">
-        {{ value }}
-    </div>
+{% set settings_item_separator -%}
+<tr class="settings-item">
+    <td colspan="100"><div class="settings-item-separator"></div></td>
+</tr>
+{%- endset %}
+
+{% set settings_section_separator -%}
+<tr class="settings-item">
+    <td colspan="100"><div class="settings-item-separator" style="margin: 0px 0px 1.5em 0px;"></div></td>
+</tr>
+{%- endset %}
+
+{% macro settings_section_title(title, id, tooltip) -%}
+<div class="settings-section-title" id="{{ id }}">
+    {{ caller() }}
+    <span class="help-mark" title="{{ tooltip }}">?</span>
+    <a class="settings-section-title">{{ title }}</a>
+    <span class="minimize open"></span>
 </div>
-{# <div class="{{ row_classes }} my-0">
-    <label class="{{ col_label }} py-1">
-    <label class="col-10 col-lg-5 col-form-label text-lg-right pr-4 py-1">
-        {{ label }}
-    </label>
-    <div class="col-lg-7 col-form-label py-1">
-        {{ value }}
-    </div>
-</div> #}
-{%- endmacro %}
-
-{% macro infoCallback(label, tooltip) -%}
-<div class="{{ row_classes }} my-0 {% if label == "" %}py-lg-0 py-2{% endif %}">
-    <label for="{{ id }}" class="{{ col_label }} {% if not label %}d-none d-lg-block{% endif %}">
-    {# <label for="{{ id }}" class="{{ col_label }}"> #}
-        {{ label }}
-        {# need class hover to trigger on mobile #}
-        <a tabindex="0" class="text-secondary d-block d-lg-none float-right" data-placement="top" data-toggle="popover" data-trigger="hover focus" 
-            title="{{ label }}" data-content="{{ tooltip }}">
-            {{ help_icon }}
-        </a>
-    </label>
-    <div class="{{ col_input }}">
-        {{ caller() }}
-    </div>
-    {{ help_column(label, tooltip) }}
-</div>
-{%- endmacro %}
-    
-{% macro input_range(label, id, tooltip, min, max, snap, ticksnum, decimals=0) -%}
-<div class="{{ row_classes }} align-items-center">
-    <label class="{{ col_label }}" for="{{ id }}">
-        <!-- <a tabindex="0" class="" data-toggle="popover" data-trigger="focus hover" title="Layout Columns" data-content="configures the number of columns used to lay out the camera frames"> -->
-        {{ label }}
-        <!-- </a> -->
-        {# need class hover to trigger on mobile #}
-        <a tabindex="0" class="text-secondary d-block d-lg-none float-right" data-placement="top" data-toggle="popover" data-trigger="hover focus" 
-            title="{{ label }}" data-content="{{ tooltip }}">
-            {{ help_icon }}
-        </a>
-    </label>
-    <div class="{{ col_input }}">
-        <input type="range" id="{{ id }}" min="{{ min }}" max="{{ max }}" snap="{{ snap }}" ticksnum="{{ ticksnum }}" decimals="{{ decimals }}" class="custom-range align-bottom">
-    </div>
-    {{ help_column(label, tooltip) }}
-    <!-- <small id="emailHelp" class="col form-text text-muted">configures the number of columns used to lay out the camera frames</small> -->
-</div>
-{%- endmacro %}
-
-{% macro input_check(label, id, tooltip, min, max, snap, ticksnum, decimals=0) -%}
-<div class="{{ row_classes }} custom-control custom-switch pl-0">
-{# <div class="form-group form-row custom-control ml-n3 custom-switch pl-0"> #}
-
-    {# positioning the checkbox is a dirty hack and may break somewhere #}
-    {# both labels are required for this to work #}
-    {# input checkbox is pushed around by the labels margins #}
-    <label class="col-lg-5 float-left text-lg-right pr-4 pl-1 pl-lg-0 mr-n2" for="">
-        {{ label }}
-        <a tabindex="0" class="text-secondary d-block d-lg-none float-right mr-n4" data-placement="top" data-toggle="popover" data-trigger="hover focus" 
-            title="{{ label }}" data-content="{{ tooltip }}">
-            {{ help_icon }}
-        </a>
-    </label>
-
-    <input type="checkbox" class="custom-control-input" id="{{ id }}">
-
-    {# A label *after* the input is required, wtf bootstrap #}
-    {# col-auto to make it only as wide as the label #}
-    <label class="col-auto ml-5 custom-control-label" for="{{ id }}">
-        {# need class hover to trigger on mobile #}
-        <!-- <a tabindex="0" class="text-info d-block d-lg-none float-right" data-placement="top" data-toggle="popover" data-trigger="hover focus" title="Fit Frames Vertically" data-content="controls whether frame sizes can be reduced to vertically fit the window or not">
-            <i style="height:1rem" class="align-middle" data-feather="help-circle"></i>
-        </a> -->
-    </label>
-    <!-- <div class="col-lg-1 mr-1 d-none d-lg-inline-block"> -->
-    {# {{ help_column(label, tooltip) }} #}
-    <div class="col-auto d-none d-lg-block text-right float-right">
-        <a tabindex="0" class="text-secondary" data-placement="top" data-toggle="popover" data-trigger="hover focus" title="{{ label }}" data-content="{{ tooltip }}">
-            {{ help_icon }}
-        </a>
-    </div>
-</div>
-
-<div class="clearfix"></div>
-{%- endmacro %}
-
-{% macro input_check_bak(label, id, tooltip, min, max, snap, ticksnum, decimals=0) -%}
-<div class="{{ row_classes }} custom-control custom-switch d-flex float-right">
-    <input type="checkbox" class="custom-control-input" id="{{ id }}">
-    {# col-auto to make it only as wide as the label #}
-    <label class="col-auto ml-1 custom-control-label" for="{{ id }}">
-        {{ label }}
-        {# need class hover to trigger on mobile #}
-        <!-- <a tabindex="0" class="text-info d-block d-lg-none float-right" data-placement="top" data-toggle="popover" data-trigger="hover focus" title="Fit Frames Vertically" data-content="controls whether frame sizes can be reduced to vertically fit the window or not">
-            <i style="height:1rem" class="align-middle" data-feather="help-circle"></i>
-        </a> -->
-    </label>
-    <!-- <div class="col-lg-1 mr-1 d-none d-lg-inline-block"> -->
-    <div class="col text-right">
-        <a tabindex="0" class="text-secondary" data-placement="top" data-toggle="popover" data-trigger="hover focus" title="{{ label }}" data-content="{{ tooltip }}">
-            {{ help_icon }}
-        </a>
-    </div>
-</div>
-<div class="clearfix"></div>
 {%- endmacro %}

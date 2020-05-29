@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import 'forms.j2' as forms %}
 
 {% macro config_item(config, depends="") -%}
     <tr class="settings-item additional-config"
@@ -105,18 +106,15 @@
             <div class="settings-container">
                 <form autocomplete="new-password">
                     <!-- Preferences -->
-                    <div class="settings-section-title" id="preferencesDiv">
-                        <span class="help-mark" title="user preferences">?</span>
-                        <a class="settings-section-title">Preferences</a>
-                        <span class="minimize open"></span>
-                    </div>
+                    {% call forms.settings_section_title("Preferences", "preferencesDiv", "user preferences") %}
+                    {% endcall %}
                     <table class="settings">
-                        {{ settings_item(
-                            "layoutColumnsRow",
-                            "Layout Columns",
-                            "layoutColumnsSlider",
-                            "configures the number of columns used to lay out the camera frames",
-                            1, 4, 1, 4) }}
+                        {{ forms.settings_range_input(
+                            id="layoutColumnsRow",
+                            label="Layout Columns",
+                            input_id="layoutColumnsSlider",
+                            tooltip="configures the number of columns used to lay out the camera frames",
+                            min=1, max=4, snap=1, ticksnum=4) }}
                         <tr class="settings-item">
                             <td class="settings-item-label"><span class="settings-item-label">Fit Frames Vertically</span></td>
                             <td class="settings-item-value"><input type="checkbox" class="styled prefs" id="fitFramesVerticallySwitch"></td>
@@ -127,28 +125,24 @@
                             <td class="settings-item-value"><input type="text" class="range styled prefs" id="layoutRowsSlider"></td>
                             <td><span class="help-mark" title="configures the number of rows used to lay out the camera frames">?</span></td>
                         </tr>
-                        <tr class="settings-item" min="0" max="100" snap="2" ticksnum="6" decimals="0">
-                            <td class="settings-item-label"><span class="settings-item-label">Frame Rate Dimmer</span></td>
-                            <td class="settings-item-value"><input type="text" class="range styled prefs" id="framerateDimmerSlider"></td>
-                            <td><span class="help-mark" title="dims the global frame rate to save network bandwidth and traffic (doesn't work on simple MJPEG cameras)">?</span></td>
-                        </tr>
-                        <tr class="settings-item" min="1" max="100" snap="2" ticks="1|20|40|60|80|100" decimals="0">
-                            <td class="settings-item-label"><span class="settings-item-label">Resolution Dimmer</span></td>
-                            <td class="settings-item-value"><input type="text" class="range styled prefs" id="resolutionDimmerSlider"></td>
-                            <td><span class="help-mark" title="dims the actual resolution of all cameras to save network bandwidth and traffic (doesn't work on simple MJPEG cameras)">?</span></td>
-                        </tr>
+                        {{ forms.settings_range_input(
+                            label="Frame Rate Dimmer",
+                            input_id="framerateDimmerSlider",
+                            tooltip="dims the global frame rate to save network bandwidth and traffic (doesn't work on simple MJPEG cameras)",
+                            min=0, max=100, snap=2, ticksnum=6) }}
+                        {{ forms.settings_range_input(
+                            label="Resolution Dimmer",
+                            input_id="resolutionDimmerSlider",
+                            tooltip="dims the actual resolution of all cameras to save network bandwidth and traffic (doesn't work on simple MJPEG cameras)",
+                            min=1, max=100, snap=2, ticksnum="1|20|40|60|80|100") }}
                     </table>
 
-                    <tr class="settings-item">
-                        <td colspan="100"><div class="settings-item-separator" style="margin: 0px 0px 1.5em 0px;"></div></td>
-                    </tr>
+                    {{ forms.settings_section_separator }}
 
                     <!-- General Settings -->
-                    <div class="settings-section-title" id="generalSectionDiv">
-                        <span class="help-mark" title="general settings, not related to any camera">?</span>
-                        <a class="settings-section-title">General Settings</a>
-                        <span class="minimize open"></span>
-                    </div>
+                    {% call forms.settings_section_title("General Settings", "generalSectionDiv", "general settings, not related to any camera") %}
+                    {% endcall %}
+
                     <table class="settings">
                         <tr class="settings-item" required="true" strip="true">
                             <td class="settings-item-label"><span class="settings-item-label">Admin Username</span></td>
@@ -237,47 +231,57 @@
                     {% endif %}
                     {% endfor %}
 
-                    <tr class="settings-item">
-                        <td colspan="100"><div class="settings-item-separator" style="margin: 0px 0px 1.5em 0px;"></div></td>
-                    </tr>
+                    {{ forms.settings_section_separator }}
 
                     <!-- Video Device -->
-                    <div class="settings-section-title" id="deviceSectionDiv">
+                    {% call forms.settings_section_title("Video Device", "deviceSectionDiv", "enable this if you want to use this camera device") %}
                         <input type="checkbox" class="styled section device camera-config" id="videoDeviceEnabledSwitch">
-                        <span class="help-mark" title="enable this if you want to use this camera device">?</span>
-                        <a class="settings-section-title">Video Device</a>
-                        <span class="minimize open"></span>
-                    </div>
+                    {% endcall %}
+
                     <table class="settings">
-                        <tr class="settings-item" required="true" strip="true">
-                            <td class="settings-item-label"><span class="settings-item-label">Camera Name</span></td>
-                            <td class="settings-item-value"><input type="text" class="styled device camera-config" id="deviceNameEntry" placeholder="camera name..."></td>
-                            <td><span class="help-mark" title="an alias for this camera device">?</span></td>
-                        </tr>
-                        <tr class="settings-item" required="true" strip="true">
-                            <td class="settings-item-label"><span class="settings-item-label">Camera ID</span></td>
-                            <td class="settings-item-value"><input type="text" class="styled device camera-config" id="deviceIdEntry" readonly="readonly"></td>
-                            <td><span class="help-mark" title="the camera identifier number">?</span></td>
-                        </tr>
-                        <tr class="settings-item">
-                            <td class="settings-item-label"><span class="settings-item-label">Camera Device</span></td>
-                            <td class="settings-item-value"><input type="text" class="styled device camera-config" id="deviceUrlEntry" readonly="readonly"></td>
-                        </tr>
-                        <tr class="settings-item">
-                            <td class="settings-item-label"><span class="settings-item-label">Camera Type</span></td>
-                            <td class="settings-item-value"><input type="text" class="styled device camera-config" id="deviceTypeEntry" readonly="readonly"></td>
-                        </tr>
-                        <tr class="settings-item">
-                            <td colspan="100"><div class="settings-item-separator"></div></td>
-                        </tr>
-                        <tr class="settings-item">
-                            <td class="settings-item-label"><span class="settings-item-label">Automatic Brightness</span></td>
-                            <td class="settings-item-value"><input type="checkbox" class="styled device camera-config" id="autoBrightnessSwitch"></td>
-                            <td><span class="help-mark" title="enables software automatic brightness (only recommended for cameras without autobrightness)">?</span></td>
-                        </tr>
-                        <tr class="settings-item">
-                            <td colspan="100"><div class="settings-item-separator"></div></td>
-                        </tr>
+                        {{ forms.settings_text_input(
+                            id="deviceNameEntry",
+                            label="Camera Name",
+                            classes="device camera-config",
+                            tooltip="an alias for this camera device",
+                            placeholder="camera name...",
+                            required=true,
+                            strip=true
+                            ) }}
+                        {{ forms.settings_text_input(
+                            id="deviceIdEntry",
+                            label="Camera ID",
+                            classes="device camera-config",
+                            tooltip="the camera identifier number",
+                            placeholder="camera name...",
+                            required=true,
+                            strip=true,
+                            readonly=true
+                            ) }}
+                        {{ forms.settings_text_input(
+                            id="deviceUrlEntry",
+                            label="Camera Device",
+                            classes="device camera-config",
+                            readonly=true
+                            ) }}
+                        {{ forms.settings_text_input(
+                            id="deviceTypeEntry",
+                            label="Camera Type",
+                            classes="device camera-config",
+                            readonly=true
+                            ) }}
+
+                        {{ forms.settings_item_separator }}
+
+                        {{ forms.settings_check_input(
+                            id="autoBrightnessSwitch",
+                            label="Automatic Brightness",
+                            classes="device camera-config",
+                            tooltip="enables software automatic brightness (only recommended for cameras without autobrightness)"
+                            ) }}
+
+                        {{ forms.settings_item_separator }}
+
                         <tr class="settings-item">
                             <td class="settings-item-label"><span class="settings-item-label">Video Resolution</span></td>
                             <td class="settings-item-value">
@@ -308,11 +312,12 @@
                             </td>
                             <td><span class="help-mark" title="use this to rotate the captured image, if your camera is not positioned correctly">?</span></td>
                         </tr>
-                        <tr class="settings-item" min="2" max="30" snap="0" ticks="2|5|10|15|20|25|30" decimals="0">
-                            <td class="settings-item-label"><span class="settings-item-label">Frame Rate</span></td>
-                            <td class="settings-item-value"><input type="text" class="range styled device camera-config" id="framerateSlider"></td>
-                            <td><span class="help-mark" title="sets the number of frames captured by the camera every second (higher values produce smoother videos but require more CPU power, larger storage space and bandwidth)">?</span></td>
-                        </tr>
+                        {{ forms.settings_range_input(
+                            label="Frame Rate",
+                            input_id="framerateSlider",
+                            tooltip="sets the number of frames captured by the camera every second (higher values produce smoother videos but require more CPU power, larger storage space and bandwidth)",
+                            min=2, max=30, snap=0, ticksnum="2|5|10|15|20|25|30") 
+                            }}
                         <tr class="settings-item">
                             <td class="settings-item-label"><span class="settings-item-label">Extra Motion Options</span></td>
                             <td class="settings-item-value"><textarea class="styled device camera-config" id="extraOptionsEntry" rows="3"></textarea></td>
