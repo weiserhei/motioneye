@@ -2,11 +2,12 @@
 {% import 'forms.j2' as forms %}
 {% set id = "preferencesDiv" %}
 {% set id2 = "collapseOne" %}
+{% set show = true %}
 
 {% block cardheader %}
     <!-- Preferences -->
     <!-- <div class="settings-section-title" id="preferencesDiv"> -->
-        <a class="collapsed" data-toggle="collapse" href="#{{ id2 }}" aria-expanded="false" aria-controls="{{ id2 }}">
+        <a class="{% if not show %}collapsed{% endif %}" data-toggle="collapse" href="#{{ id2 }}" aria-expanded="{{ show }}" aria-controls="{{ id2 }}">
             Preferences
         </a>
         <!-- <a tabindex="0" class="text-secondary" data-toggle="popover" data-trigger="focus" title="" data-content="User Preferences">

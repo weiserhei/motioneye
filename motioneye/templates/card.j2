@@ -1,11 +1,13 @@
+{# {% set show = false %} #}
 <div class="card mb-4 bg-dark text-light">
     <div class="card-header" role="tab" id="{{ id }}">
         <h5 class="mb-0">
+            {{ show }}
             {% block cardheader %}
             {% endblock %}
         </h5>
     </div>
-    <div id="{{ id2 }}" class="collapse show" role="tabpanel" aria-labelledby="{{ id }}">
+    <div id="{{ id2 }}" class="collapse {% if show %}show{% endif %}" role="tabpanel" aria-labelledby="{{ id }}">
         <div class="card-body">
             {% block cardbody %}
             {% endblock %}

@@ -2,6 +2,7 @@
 {% import 'forms.j2' as forms %}
 {% set id = "generalSectionDiv" %}
 {% set id2 = "collapseTwo" %}
+{% set show = true %}
 
 <!-- <div class="settings-section-title" id="generalSectionDiv">
     <span class="help-mark" title="general settings, not related to any camera">?</span>
@@ -10,7 +11,7 @@
 </div> -->
 
 {% block cardheader %}
-    <a class="collapsed" data-toggle="collapse" href="#{{ id2 }}" aria-expanded="true" aria-controls="{{ id2 }}">
+    <a class="{% if not show %}collapsed{% endif %}" data-toggle="collapse" href="#{{ id2 }}" aria-expanded="{{ show }}" aria-controls="{{ id2 }}">
         General Settings
     </a>
 {% endblock %}

@@ -2,6 +2,7 @@
 {% import 'forms.j2' as forms %}
 {% set id = "deviceSectionDiv" %}
 {% set id2 = "collapseThree" %}
+{% set show = true %}
 
 {% block cardheader %}
 
@@ -10,7 +11,7 @@
         <label class="custom-control-label" for="videoDeviceEnabledSwitch"></label>
     </div>
 
-        <a class="collapsed" data-toggle="collapse" href="#{{ id2 }}" aria-expanded="false" aria-controls="{{ id2 }}">
+        <a class="{% if not show %}collapsed{% endif %}" data-toggle="collapse" href="#{{ id2 }}" aria-expanded="{{ show }}" aria-controls="{{ id2 }}">
             Video Device
         </a>
         <!-- <a tabindex="0" class="text-secondary" data-toggle="popover" data-trigger="focus" title="" data-content="User Preferences">
