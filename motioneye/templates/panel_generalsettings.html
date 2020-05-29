@@ -1,0 +1,105 @@
+{% extends "card.j2" %}
+{% import 'forms.j2' as forms %}
+{% set id = "generalSectionDiv" %}
+{% set id2 = "collapseTwo" %}
+
+<!-- <div class="settings-section-title" id="generalSectionDiv">
+    <span class="help-mark" title="general settings, not related to any camera">?</span>
+    <a class="settings-section-title">General Settings</a>
+    <span class="minimize open"></span>
+</div> -->
+
+{% block cardheader %}
+    <a class="collapsed" data-toggle="collapse" href="#{{ id2 }}" aria-expanded="true" aria-controls="{{ id2 }}">
+        General Settings
+    </a>
+{% endblock %}
+
+{% block cardbody %}
+    {{ forms.input(
+        "Admin Username", 
+        "adminUsernameEntry", 
+        "text", 
+        true, 
+        "the username to be used for configuring the system", 
+        true, 
+        "none") 
+        }}
+    {{ forms.input(
+        "Admin Password", 
+        "adminPasswordEntry", 
+        "password", 
+        false, 
+        "administrator's password") 
+        }}
+    {{ forms.input(
+        "Surveillance Username", 
+        "normalUsernameEntry", 
+        "text", 
+        true, 
+        "the username to be used for video surveillance", 
+        false, 
+        "none") 
+        }}
+    {{ forms.input(
+        "Surveillance Password", 
+        "normalPasswordEntry", 
+        "password", 
+        false, 
+        "the password for the surveillance user (leave empty for passwordless surveillance)") 
+        }}
+    <hr>
+
+    {% for config in main_sections.get('general', {}).get('configs', []) %}
+        // todo general configs
+        {# {{config_item(config)}} #}
+    {% endfor %}
+    
+    <hr>
+
+    {{ forms.info("motionEye Version", version) }}
+    {{ forms.info("Motion Version", motion_version) }}
+    {{ forms.info("OS Version", os_version) }}
+    {{ forms.info("motionEye Version", version) }}
+    
+    {% set col = "col-8 col-xl-6" %}
+    {% if enable_update %}
+        {% call forms.infoCallback("Software Update", "checks for new versions and performs updates") %}
+        <div class="form-row"><div class="{{ col }}">
+            {{ forms.button("Check", "updateButton") }}
+        </div></div>
+        {% endcall %}
+    {% endif %}
+    
+    {# only hidden in motioneye #}
+    {% if enable_reboot %}
+        {% call forms.infoCallback("Power", "shuts down the system") %}
+        <div class="form-row"><div class="{{ col }}">
+            {{ forms.button("Shut Down", "shutDownButton", "danger") }}
+        </div></div>
+        {% endcall %}
+    {% endif %}
+    
+    {# only hidden in motioneye #}
+    {% if enable_reboot %}
+        {% call forms.infoCallback("", "reboots the system") %}
+        <div class="form-row"><div class="{{ col }}">
+            {{ forms.button("Reboot", "rebootButton", "danger") }}
+        </div></div>
+        {% endcall %}
+    {% endif %}
+
+    <hr>
+
+    {% call forms.infoCallback("Configuration", "creates a file with the current configuration for you to save it locally") %}
+    <div class="form-row"><div class="{{ col }}">
+        {{ forms.button("Backup", "backupButton") }}
+    </div></div>
+    {% endcall %}
+
+    {% call forms.infoCallback("", "restores the configuration from a previously saved backup file") %}
+    <div class="form-row"><div class="{{ col }}">
+        {{ forms.button("Restore", "restoreButton") }}
+    </div></div>
+    {% endcall %}
+{% endblock %}

@@ -1,0 +1,38 @@
+<!-- Non-pushable content. -->
+<nav class="navbar navbar-dark sticky-top bg-dark d-flex justify-content-between p-0 shadow align-bottom">
+    <!-- <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    </button> -->
+    <div class="d-flex p-0 text-light">
+        <button class="btn btn-primary btn-lg rounded-0 float-left mr-4" 
+            type="button" data-toggle="canvas" 
+            data-target="#bs-canvas-left" aria-expanded="false" 
+            aria-controls="bs-canvas-left">&#9776;</button>
+        
+        <!-- <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="#">Sign out</a>
+            </li>
+        </ul> -->
+        <div class="my-auto">
+            {% if hostname %}<div class="hostname">{{hostname}}</div>{% endif %}
+        </div>
+    </div>
+    
+    <div class="d-flex">
+        <div class="btn button logout-button text-light" title="switch user">
+            <!-- <i data-feather="user"></i> -->
+            <i data-feather="log-out"></i>
+        </div>
+
+        <a href="" class="text-light">
+            <div class="d-flex justify-content-between">
+                <div class="col-6 pr-3">
+                    <span class="lead">motionEye</span>
+                </div>
+                <div class="ml-2 col-4 pr-0">
+                    <img src="{{static_path}}img/motioneye-logo.svg">
+                </div>
+            </div>
+        </a>
+    </div>
+</nav>

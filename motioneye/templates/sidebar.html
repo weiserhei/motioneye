@@ -1,0 +1,58 @@
+<!-- Off-canvas sidebar markup, left/right or both. -->
+<!-- <div id="bs-canvas-left" class="bs-canvas bs-canvas-anim bs-canvas-left position-fixed bg-dark h-100"> -->
+<div id="bs-canvas-left" style="min-width:370px; width:40%" class="bs-canvas bs-canvas-anim bs-canvas-left position-fixed bg-dark h-100">
+    <header class="bs-canvas-header p-4 bg-primary">
+    <!-- <h4 class="d-inline-block text-light mb-0"> -->
+        <div class="d-flex justify-content-between no-gutters">
+            <div class="col-6">
+                <select class="custom-select" id="cameraSelect" {% if not add_remove_cameras %}style="display:none;"{% endif %}></select>
+            </div>
+            <div class="col-5">
+                {# line-height hack to align with select #}
+                <button class="btn ml-1 button rem-camera-button" style="line-height:0;" id="remCameraButton" title="remove camera" {% if not add_remove_cameras %}style="display: none;"{% endif %}>
+                    <i data-feather="trash-2"></i>
+                </button>
+                <div class="btn btn-success button apply-button" id="applyButton">Apply</div>
+            </div>
+    <!-- </h4> -->
+            <button type="button" class="ml-2 bs-canvas-close close" aria-label="Close"><span aria-hidden="true" class="text-light">&times;</span></button>
+        </div>
+    </header>
+    <div id="settings" class="bs-canvas-content px-3 py-3">
+        <div id="accordion" role="tablist">
+            <!-- why the autocomplete? -->
+            <form autocomplete="new-password">
+                {% include("panel_preferences.html") %}
+                {% include("panel_generalsettings.html") %}
+                
+                <!-- Additional Main Sections -->
+                {% for section in main_sections.values() %}
+                {% if section.get('label') and section.get('configs') %}
+                {% set id = section.name %}
+                <div class="card mb-4 bg-dark text-white">
+                    <div class="card-header settings-section-title additional-section" role="tab" id="generalSectionDiv">
+                        <h5 class="mb-0">
+                            {# {% if section.get('onoff') %}<input type="checkbox" class="styled section additional-section {{section['name']}} main-config" id="{{section['name']}}Switch">{% endif %}
+                            {% if section.get('description') %}<span class="help-mark" title="{{section['description']}}">?</span>{% endif %} #}
+                            <a class="settings-section-title {% if section.get('open') %}{% else %}collapsed{% endif %}" data-toggle="collapse" href="#{{ id }}" aria-expanded="{% if section.get('open') %}true{% else %}false{% endif %}" aria-controls="{{ id }}">
+                                {{section['label']}}
+                            </a>
+                        </h5>
+                    </div>
+                    <div id="{{ id }}" class="collapse {% if section.get('open') %}show{% endif %}" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="card-body">
+                            {% for config in section['configs'] %}
+                            {{config_item(config)}}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                
+                {% include("panel_videodevice.html") %}
+                {% include("panel_rest.html") %}
+            </form>
+        </div>
+    </div>
+</div>

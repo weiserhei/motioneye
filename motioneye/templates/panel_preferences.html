@@ -1,0 +1,48 @@
+{% extends "card.j2" %}
+{% import 'forms.j2' as forms %}
+{% set id = "preferencesDiv" %}
+{% set id2 = "collapseOne" %}
+
+{% block cardheader %}
+    <!-- Preferences -->
+    <!-- <div class="settings-section-title" id="preferencesDiv"> -->
+        <a class="collapsed" data-toggle="collapse" href="#{{ id2 }}" aria-expanded="false" aria-controls="{{ id2 }}">
+            Preferences
+        </a>
+        <!-- <a tabindex="0" class="text-secondary" data-toggle="popover" data-trigger="focus" title="" data-content="User Preferences">
+            <i style="height:1rem" class="align-middle" data-feather="help-circle"></i>
+        </a> -->
+    <!-- </div> -->
+{% endblock %}
+
+{% block cardbody %}
+    {{ forms.input_range(
+        "Layout Columns", 
+        "layoutColumnsSlider", 
+        "configures the number of columns used to lay out the camera frames", 
+        1, 4, 1, 4, 0) 
+        }}
+    {{ forms.input_check(
+        "Fit Frames Vertically", 
+        "fitFramesVerticallySwitch", 
+        "controls whether frame sizes can be reduced to vertically fit the window or not") 
+        }}
+    {{ forms.input_range(
+        "Layout Rows", 
+        "layoutRowsSlider", 
+        "configures the number of rows used to lay out the camera frames", 
+        1, 4, 1, 4) 
+        }}
+    {{ forms.input_range(
+        "Frame Rate Dimmer", 
+        "framerateDimmerSlider", 
+        "dims the global frame rate to save network bandwidth and traffic (doesn't work on simple MJPEG cameras)", 
+        0, 100, 2, 6) 
+        }}
+    {{ forms.input_range(
+        "Resolution Dimmer", 
+        "resolutionDimmerSlider", 
+        "dims the actual resolution of all cameras to save network bandwidth and traffic (doesn't work on simple MJPEG cameras)", 
+        1, 100, 2, "1|20|40|60|80|100") 
+        }}
+{% endblock %}
