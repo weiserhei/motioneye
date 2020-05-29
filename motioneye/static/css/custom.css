@@ -1,0 +1,277 @@
+/* Caret in dropdown header */
+[data-toggle="collapse"]:after {
+    display: inline-block;
+        font-family: "Font Awesome 5 Free";
+        /* font: normal normal normal 14px/1 FontAwesome; */
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      font-weight: 900;
+      content: "\f0da";
+      transform: rotate(90deg) ;
+      transition: all linear 0.25s;
+      float: right;
+      }   
+    [data-toggle="collapse"].collapsed:after {
+      transform: rotate(0deg) ;
+    }
+
+
+
+
+/* basic */
+
+html {
+    height: 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    height: 100%;
+    /* color: #dddddd; */
+    /* font-size: 22px; */
+    /* background-color: #212121 !important; */
+}
+
+/* layout */
+
+html {
+  font-family: 'Maven Pro';
+}
+
+div.page,
+div.header-container {
+  position: relative;
+  min-width: 320px;
+  width: 100%;
+}
+
+div.page {
+  font-size: 1em;
+  transition: all 0.5s ease;
+  min-height: 100%;
+}
+
+div.header {
+  background-color: rgba(64, 64, 64, 0.5);
+  box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+  top: 0px;
+  width: 100%;
+  height: 50px;
+  position: fixed;
+  overflow: hidden;
+  z-index: 10000;
+  transition: all 0.2s ease;
+}
+
+div.header.full-screen {
+  height: 0px;
+}
+
+div.header-container {
+  transition: all 0.5s ease;
+}
+
+div.footer {
+  position: absolute;
+  bottom: 5px;
+  width: 100%;
+  height: 3em;
+  font-size: 0.7em;
+  color: #aaa;
+  text-align: center;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+div.footer.full-screen {
+  height: 0px;
+}
+
+div.copyright-note {
+  border-top: 1px solid #333;
+  padding-top: 0.2em;
+  margin: 0px 15%;
+}
+
+div.page-container {
+  transition: all 0.2s ease;
+  padding: 50px 0.2em 50px 0px;
+  margin: auto;
+}
+
+div.page-container.stretched {
+  margin-left: 40%;
+  font-size: 16px;
+}
+
+div.page-container.three-columns.stretched {
+  font-size: 12px;
+}
+
+div.page-container.four-columns.stretched {
+  font-size: 10px;
+}
+
+div.page-container.full-screen {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+/* from main.css */
+img.background-logo {
+  position: absolute;
+  width: 30%;
+  left: 35%;
+  top: 10em;
+  opacity: 0.03;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+
+/* ui.css */
+
+/* modal dialogs */
+    
+div.modal-glass {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  background-color: black;
+  opacity: 0;
+}
+
+div.modal-container {
+  position: fixed;
+  display: none;
+  z-index: 10001;
+  background-color: #313131;
+  border-radius: 3px;
+  opacity: 0;
+  padding: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+div.modal-title-bar {
+  min-height: 1.5em;
+  line-height: 1.5em;
+  text-align: center;
+  position: relative;
+}
+
+span.modal-title {
+  display: inline-block;
+  color: white;
+  font-size: 1.2em;
+  line-height: 1.2em;
+  max-width: 30em;
+}
+
+div.modal-close-button {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  margin-top: -5px;
+  margin-right: -5px;
+  width: 2.5em;
+  height: 2.5em;
+  background-image: url(../img/camera-top-buttons.svg);
+  background-size: cover;
+  background-position: -400% 0px;
+  cursor: pointer;
+}
+
+table.modal-buttons-container {
+  width: 100%;
+  margin: auto;
+  text-align: center;
+  table-layout: fixed;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+table.modal-buttons-container td:not(:FIRST-CHILD) {
+  padding-left: 5px;
+}
+
+table.modal-buttons-container div.button.dialog {
+  display: block;
+}
+
+div.modal-progress {
+  border-radius: 10px;
+  background-image: url(../img/modal-progress.gif);
+  width: 64px;
+  height: 64px;
+  margin: auto;
+}
+
+td.dialog-item-label {
+  text-align: right;
+  padding-right: 5px;
+}
+
+td.dialog-item-value {
+  text-align: left;
+  padding-left: 5px;
+}
+
+span.dialog-item-label {
+  font-size: 0.9em;    
+}
+
+div.dialog-item-separator {
+  height: 1px;
+  border-top: 1px solid #414141;
+  margin: 0.5em 1em;
+}
+
+ 
+  /* popup message */
+
+div.popup-message-container {
+  position: fixed;
+  display: none;
+  z-index: 10002;
+  background-color: #313131;
+  border-radius: 3px;
+  opacity: 0;
+  padding: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  top: 60px;
+}
+
+span.popup-message {
+  
+}
+
+span.popup-message.info {
+  color: white;
+}
+
+span.popup-message.error {
+  color: #FF6D55;
+}
+
+
+  /* media queries */
+
+@media all and (max-width: 400px) {
+  span.modal-title {
+      font-size: 1.5em;
+      
+  }
+  
+  div.modal-title-bar {
+      min-height: 2em;
+      line-height: 2em;
+  }
+}
