@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 {% from 'config_item.j2'import config_item %}
 
-{% block title %}{% if title %}{{title}}{% else %}{{hostname}}{% endif %}{% endblock %}
-
+{% block title %}{{ title if title else hostname }}{% endblock %}
 
 {% block style %}
     {{super()}}
