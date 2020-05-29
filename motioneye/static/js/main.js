@@ -1566,31 +1566,31 @@ function updateConfigUI() {
     });
 
     /* hide sections that have no visible configs and no switch */
-    $('div.settings-section-title').each(function () {
-        var $this = $(this);
-        var $table = $this.next();
-        var controls = $table.find('input, select');
+    // $('div.settings-section-title').each(function () {
+    //     var $this = $(this);
+    //     var $table = $this.next();
+    //     var controls = $table.find('input, select');
 
-        var switchButton = $this.children('div.check-box');
-        if (switchButton.length && !switchButton[0]._hideNull) {
-            return; /* has visible switch */
-        }
+    //     var switchButton = $this.children('div.check-box');
+    //     if (switchButton.length && !switchButton[0]._hideNull) {
+    //         return; /* has visible switch */
+    //     }
 
-        for (var i = 0; i < controls.length; i++) {
-            var control = $(controls[i]);
-            var tr = control.parents('tr:eq(0)')[0];
-            if (!tr._hideLogic && !tr._hideNull) {
-                return; /* has visible controls */
-            }
-        }
+    //     for (var i = 0; i < controls.length; i++) {
+    //         var control = $(controls[i]);
+    //         var tr = control.parents('tr:eq(0)')[0];
+    //         if (!tr._hideLogic && !tr._hideNull) {
+    //             return; /* has visible controls */
+    //         }
+    //     }
 
-        $table.find('div.settings-item-separator').each(function () {
-            $(this).parent().parent().each(markHideLogic);
-        });
+    //     $table.find('div.settings-item-separator').each(function () {
+    //         $(this).parent().parent().each(markHideLogic);
+    //     });
 
-        $this.each(markHideLogic);
-        $table.each(markHideLogic);
-    });
+    //     $this.each(markHideLogic);
+    //     $table.each(markHideLogic);
+    // });
 
     /* hide useless separators */
     $('div.settings-container table.settings').each(function () {
@@ -3470,7 +3470,7 @@ function runLoginDialog(retry) {
 
     var form = 
             $('\
-            <form class="form-signin" action="' + basePath + 'login/" target="temp" method="POST"> \
+            <form class="form-signin text-light" action="' + basePath + 'login/" target="temp" method="POST"> \
             <div class="text-center mb-4"> \
               <h1 class="h3 mb-3 font-weight-normal">Login</h1> \
             </div> \
