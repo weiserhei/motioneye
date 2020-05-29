@@ -3468,6 +3468,33 @@ function runLoginDialog(retry) {
                 '</tr>' +
             '</table></form>');
 
+    var form = 
+            $('\
+            <form class="form-signin" action="' + basePath + 'login/" target="temp" method="POST"> \
+            <div class="text-center mb-4"> \
+              <h1 class="h3 mb-3 font-weight-normal">Login</h1> \
+            </div> \
+          \
+            <div class="form-label-group"> \
+              <input type="text" id="usernameEntry" name="username" class="form-control" placeholder="Username" autofocus> \
+              <label for="usernameEntry">Username</label> \
+            </div> \
+          \
+            <div class="form-label-group"> \
+              <input type="password" id="passwordEntry" name="password" class="form-control" placeholder="Password"> \
+              <label for="passwordEntry">Password</label> \
+            </div> \
+            <input type="submit" style="display: none;" name="login" value="login">\
+            <div class="checkbox mb-3"> \
+              <label> \
+                <input type="checkbox" value="remember-me" id="rememberCheck"> Remember me \
+              </label> \
+            </div>'+
+            // '<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>'+
+            // '<p class="mt-5 mb-3 text-muted text-center">&copy; 2017-2020</p>'+
+          '</form> \
+            ');
+
     var usernameEntry = form.find('#usernameEntry');
     var passwordEntry = form.find('#passwordEntry');
     var rememberCheck = form.find('#rememberCheck');
