@@ -53,7 +53,7 @@ Object.update = function (dest, source) {
 };
 
 
-    /* Array utilities */
+/* Array utilities */
 
 Array.prototype.indexOf = Array.prototype.indexOf || function (obj) {
     for (var i = 0; i < this.length; i++) {
@@ -140,7 +140,7 @@ Array.prototype.sortKey = function (keyFunc, reverse) {
 };
 
 
-    /* String utilities */
+/* String utilities */
 
 String.prototype.startsWith = String.prototype.startsWith || function (str) {
     return (this.substr(0, str.length) === str);
@@ -189,7 +189,7 @@ String.prototype.format = function () {
 };
 
 
-    /* misc utilities */
+/* misc utilities */
 
 var sha1 = (function () {
     var K = [0x5a827999, 0x6ed9eba1, 0x8f1bbcdc, 0xca62c1d6];
@@ -357,4 +357,144 @@ function addAuthParams(method, url, body) {
     url += '&_signature=' + signature;
 
     return url;
+}
+
+function isAdmin() {
+    return username === adminUsername;
+}
+
+function ajax(method, url, data, callback, error, timeout) {
+    var origUrl = url;
+    var origData = data;
+
+    if (url.indexOf('?') < 0) {
+        url += '?';
+    }
+    else {
+        url += '&';
+    }
+
+    url += '_=' + new Date().getTime();
+
+    var json = false;
+    var processData = true;
+    if (method == 'POST') {
+        if (window.FormData && (data instanceof FormData)) {
+            json = false;
+            processData = false;
+        }
+        else if (typeof data == 'object') {
+            data = JSON.stringify(data);
+            json = true;
+        }
+    }
+    else { /* assuming GET */
+        if (data) {
+            var query = $.param(data);
+            /* $.param encodes spaces as "+" */
+            query = query.replaceAll('+', '%20');
+            url += '&' + query;
+            data = null;
+        }
+    }
+
+    url = addAuthParams(method, url, processData ? data : null);
+
+    function onResponse(data) {
+        if (data && data.error == 'unauthorized') {
+            if (data.prompt) {
+                runLoginDialog(function () {
+                    ajax(method, origUrl, origData, callback, error);
+                });
+            }
+
+            window._loginRetry = true;
+        }
+        else {
+            delete window._loginRetry;
+            if (callback) {
+                $('body').toggleClass('admin', isAdmin());
+                callback(data);
+            }
+        }
+    }
+
+    var options = {
+        type: method,
+        url: url,
+        data: data,
+        timeout: timeout || 300 * 1000,
+        success: onResponse,
+        contentType: json ? 'application/json' : false,
+        processData: processData,
+        error: error || function (request, options, error) {
+            if (request.status == 403) {
+                return onResponse(request.responseJSON);
+            }
+
+            showErrorMessage();
+            if (callback) {
+                callback();
+            }
+        }
+    };
+
+    $.ajax(options);
+}
+
+function getCookie(name) {
+    var cookie = document.cookie + '';
+
+    if (cookie.length <= 0) {
+        return null;
+    }
+
+    var start = cookie.indexOf(name + '=');
+    if (start == -1) {
+        return null;
+    }
+
+    var start = start + name.length + 1;
+    var end = cookie.indexOf(';', start);
+    if (end == -1) {
+        end = cookie.length;
+    }
+
+    return cookie.substring(start, end);
+}
+
+function setCookie(name, value, days) {
+    var date, expires;
+    if (days) {
+        date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = 'expires=' + date.toGMTString();
+    }
+    else {
+        expires = '';
+    }
+
+    document.cookie = name + '=' + value + '; ' + expires + '; path=/';
+}
+
+function showErrorMessage(message) {
+    if (message == null || message == true) {
+        message = 'An error occurred. Refreshing is recommended.';
+    }
+
+    showPopupMessage(message, 'error');
+}
+
+function doLogout() {
+    setCookie(USERNAME_COOKIE, '_');
+    window.location.reload(true);
+}
+
+function authorizeUpload() {
+    var service = $('#uploadServiceSelect').val();
+    var cameraId = $('#cameraSelect').val();
+    var url = basePath + 'config/' + cameraId + '/authorize/?service=' + service;
+    url = addAuthParams('GET', url);
+
+    window.open(url, '_blank');
 }
