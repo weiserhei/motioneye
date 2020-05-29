@@ -2,7 +2,7 @@
 var _modalDialogContexts = [];
 
 
-    /* UI widgets */
+/* UI widgets */
 
 function makeCheckBox($input) {
     $input.each(function () {
@@ -337,7 +337,7 @@ function makeProgressBar($div) {
 }
 
 
-    /* validators */
+/* validators */
 
 function makeTextValidator($input, required) {
     if (required == null) {
@@ -775,7 +775,7 @@ function makeCustomValidator($input, isValidFunc) {
 }
 
 
-    /* other input value processors */
+/* other input value processors */
 
 function makeStrippedInput($input) {
     $input.change(function () {
@@ -790,7 +790,7 @@ function makeCharReplacer($input, oldChars, newStr) {
 }
 
 
-    /* modal dialog */
+/* modal dialog */
 
 function showModalDialog(content, onClose, onShow, stack) {
     var glass = $('div.modal-glass');
@@ -1110,7 +1110,7 @@ function runModalDialog(options) {
 }
 
 
-    /* popup message */
+/* popup message */
 
 function showPopupMessage(message, type) {
     var container = $('div.popup-message-container');
