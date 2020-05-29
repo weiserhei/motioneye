@@ -912,7 +912,8 @@ function makeModalDialogButtons(buttonsInfo) {
     var tr = buttonsContainer.find('tr');
     
     buttonsInfo.forEach(function (info) {
-        var buttonDiv = $('<div class="button dialog mouse-effect"></div>');
+        // var buttonDiv = $('<div class="button dialog mouse-effect"></div>');
+        var buttonDiv = $('<button class="btn btn-lg btn-primary btn-block"></button>');
         
         buttonDiv.attr('tabIndex', '0'); /* make button focusable */
         buttonDiv.html(info.caption);
